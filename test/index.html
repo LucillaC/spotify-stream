@@ -1,39 +1,58 @@
 
 <html ng-app="napp">
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script>
-var app = angular.module("napp", []);
-angular.module('napp', []).config(function($sceProvider) {
-  // Completely disable SCE.  For demonstration purposes only!
-  // Do not use in new projects.
-  $sceProvider.enabled(false);
-});
-angular.module("napp").controller("nappCtrl", function($scope) {
-  $scope.link = []; 
-  $scope.post = function (uri) {
-    $scope.link.push( 'http://127.0.0.1:4569/music/' + uri);
+<script src="napp.js"></script>
+<script src="audio-player.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
 
-  };
-});
-</script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 <body>
 
 <div ng-controller="nappCtrl">
 
-<h2>Napp</h2>
-<form>
+<h2>PULSE</h2>
+
+<div ng-repeat="song in playlist">
+  <span>{{song}}</span>
+</div>
+
+<input type="text" ng-model="search" ng-change="searchTrack()" placeholder="Search for an track">
+<ul class="collection">
+  <li class="collection-item avatar" ng-repeat="track in tracks">
+    <div>
+      <span>{{track.name}}: {{track.uri}}</span>
+      <input ng-click="post(track.uri); inputUrl='';" type='submit' value='load'>
+    </div>  
+  </li>
+</ul>
+
+<!-- <input type="text" ng-model="search" ng-change="searchTrack()" placeholder="Search for an track">
+<ul class="collection">
+  <li class="collection-item avatar" ng-repeat="track in tracks">
+    <div>
+      <span>{{track.name}}: {{track.uri}}</span>
+      <input ng-click="post({uri: track.uri, name: track.name}); inputUrl='';" type='submit' value='load'>
+    </div>  
+  </li>
+</ul> -->
+
+<!-- <form>
 Spotify URI: 
     <input ng-model="inputUrl"class='text' type='text' name='url'>
-    <input ng-click="post(inputUrl); inputUrl='';" type='submit' value='load'>
-</form>
-<div ng-repeat="l in link">
-<audio controls>
-  <source  ng-src="{{l}}" type="audio/mpeg">
+</form> -->
+<audio id="track" controls autoplay>
+  <source  ng-src="{{playlist[0]}}" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+<!-- <div ng-repeat="song in playlist">
+<audio ng-model="track" controls autoplay>
+  <source  ng-src="{{song}}" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 </div>
 </div>
-
-
 </body>
 </html>
